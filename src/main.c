@@ -15,8 +15,14 @@ void update_graphics(void);
 
 int main(int argc, char** argv)
 {
+	if (argc < 2)
+	{
+		printf("Use with \"CHIP-8.exe filename\"\n");
+		return 0;
+	}
+
 	c8_emulator_init(&emulator);
-	if (c8_emulator_load_rom(&emulator, "roms/pong2.c8") == 1)
+	if (c8_emulator_load_rom(&emulator, argv[1]) == 1)
 		return 1;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING))
