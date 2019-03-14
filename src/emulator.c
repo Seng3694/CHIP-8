@@ -25,11 +25,9 @@ static uint8 fontset[0x50] =
   0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-static int32 i32 = 0;
-
 static inline uint8 random_uint8(void)
 {
-	return rand() % 0xff;
+	return rand() % 0x100;
 }
 
 void c8_emulator_init(c8_emulator_t* const emulator)
