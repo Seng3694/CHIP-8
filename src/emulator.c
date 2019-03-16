@@ -37,7 +37,7 @@ void c8_emulator_init(c8_emulator_t* const emulator)
 	memset(emulator->pixels, 0, C8_DISPLAY_SIZE);
 	memset(emulator->stack, 0, C8_STACK_SIZE);
 	memset(&emulator->registers, 0, sizeof(c8_registers_t));
-	memset(emulator->keys, 0, C8_KEY_COUNT);
+	emulator->keys = 0;
 	emulator->stack_pointer = 0;
 	emulator->address_register_i = 0;
 	emulator->program_counter = 0x200;
@@ -246,14 +246,14 @@ void c8_emulator_cycle(c8_emulator_t* const emulator)
 		switch (opcode & 0x00ff)
 		{
 		case 0x009e: //EX9E skips next if key stored in VX is pressed
-			if (emulator->keys[emulator->registers.v[x]] != 0)
+			if(((emulator->keys >> emulator->registers.v[x]) & 1) == 1)
 				emulator->program_counter += 4;
 			else
 				emulator->program_counter += 2;
 			break;
 
 		case 0x00a1: //EXA1 skips next if key stored in VX isn't pressed
-			if (emulator->keys[emulator->registers.v[x]] == 0)
+			if (((emulator->keys >> emulator->registers.v[x]) & 1) == 0)
 				emulator->program_counter += 4;
 			else
 				emulator->program_counter += 2;
@@ -272,17 +272,7 @@ void c8_emulator_cycle(c8_emulator_t* const emulator)
 
 		case 0x000a: //FX0A VX = key()   keypress awaited and then stored to VX
 		{
-			uint8 key_pressed = 0;
-			for (int i = 0; i < C8_KEY_COUNT; ++i)
-			{
-				if (emulator->keys[i] != 0)
-				{
-					emulator->registers.v[x] = i;
-					key_pressed = 1;
-				}
-			}
-
-			if (key_pressed)
+			if(emulator->keys != 0)
 				emulator->program_counter += 2;
 			
 			break;

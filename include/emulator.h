@@ -11,16 +11,35 @@
 #define C8_STACK_SIZE 24
 #define C8_KEY_COUNT 16
 
-#define C8_MEMORY_1 0x000
-#define C8_MEMORY_2 0x050
-#define C8_MEMORY_3 0x200
-
 typedef struct c8_emulator {
 	uint8 memory[C8_MEMORY_SIZE];
 	uint8 pixels[C8_DISPLAY_SIZE];
 	uint16 stack[C8_STACK_SIZE];
 	c8_registers_t registers;
-	uint8 keys[C8_KEY_COUNT];
+
+	union {
+		struct {
+			uint8 k0 : 1;
+			uint8 k1 : 1;
+			uint8 k2 : 1;
+			uint8 k3 : 1;
+			uint8 k4 : 1;
+			uint8 k5 : 1;
+			uint8 k6 : 1;
+			uint8 k7 : 1;
+			uint8 k8 : 1;
+			uint8 k9 : 1;
+			uint8 ka : 1;
+			uint8 kb : 1;
+			uint8 kc : 1;
+			uint8 kd : 1;
+			uint8 ke : 1;
+			uint8 kf : 1;
+		};
+
+		uint16 keys;
+	};
+
 	uint16 stack_pointer;
 	uint16 address_register_i;
 	uint16 program_counter;

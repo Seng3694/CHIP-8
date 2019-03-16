@@ -18,8 +18,14 @@ int main(int argc, char** argv)
 {
 	if (argc < 2)
 	{
+#ifdef _DEBUG
+		argc = 2;
+		const char* argv2[] = { argv[0], "roms/pong2.c8" };
+		argv = argv2;
+#else
 		printf("Use with \"CHIP-8.exe filename\"\n");
 		return 0;
+#endif
 	}
 
 	c8_emulator_init(&emulator);
@@ -90,25 +96,22 @@ int main(int argc, char** argv)
 					const uint8 key_down = e.key.type == SDL_KEYDOWN ? 1 : 0;
 					switch (e.key.keysym.sym)
 					{
-					case SDLK_1: emulator.keys[0] = key_down; break;
-					case SDLK_2: emulator.keys[1] = key_down; break;
-					case SDLK_3: emulator.keys[2] = key_down; break;
-					case SDLK_4: emulator.keys[3] = key_down; break;
-
-					case SDLK_q: emulator.keys[4] = key_down; break;
-					case SDLK_w: emulator.keys[5] = key_down; break;
-					case SDLK_e: emulator.keys[6] = key_down; break;
-					case SDLK_r: emulator.keys[7] = key_down; break;
-
-					case SDLK_a: emulator.keys[8] = key_down; break;
-					case SDLK_s: emulator.keys[9] = key_down; break;
-					case SDLK_d: emulator.keys[10] = key_down; break;
-					case SDLK_f: emulator.keys[11] = key_down; break;
-
-					case SDLK_y: emulator.keys[12] = key_down; break;
-					case SDLK_x: emulator.keys[13] = key_down; break;
-					case SDLK_c: emulator.keys[14] = key_down; break;
-					case SDLK_v: emulator.keys[15] = key_down; break;
+					case SDLK_1: emulator.k0 = key_down; break;
+					case SDLK_2: emulator.k1 = key_down; break;
+					case SDLK_3: emulator.k2 = key_down; break;
+					case SDLK_4: emulator.k3 = key_down; break;
+					case SDLK_q: emulator.k4 = key_down; break;
+					case SDLK_w: emulator.k5 = key_down; break;
+					case SDLK_e: emulator.k6 = key_down; break;
+					case SDLK_r: emulator.k7 = key_down; break;
+					case SDLK_a: emulator.k8 = key_down; break;
+					case SDLK_s: emulator.k9 = key_down; break;
+					case SDLK_d: emulator.ka = key_down; break;
+					case SDLK_f: emulator.kb = key_down; break;
+					case SDLK_y: emulator.kc = key_down; break;
+					case SDLK_x: emulator.kd = key_down; break;
+					case SDLK_c: emulator.ke = key_down; break;
+					case SDLK_v: emulator.kf = key_down; break;
 					}
 
 					break;
